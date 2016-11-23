@@ -38,9 +38,9 @@ import static org.mockito.Mockito.mock;
 /**
  * Created by Sanja on 15.02.14.
  */
-public class SamplePerormanceTest {
+public class SamplePerformanceTest {
 
-    @Test // TODO закончить как будет настроение :)
+    @Test
     public void test() {
         GameRunner sampleGame = new GameRunner();
 
