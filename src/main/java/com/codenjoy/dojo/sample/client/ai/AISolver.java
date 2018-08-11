@@ -43,12 +43,12 @@ import java.util.List;
  * {@see Dice} что приходит через конструктор).
  * Для его запуска воспользуйся методом {@see ApofigSolver#main}
  */
-public class ApofigSolver implements Solver<Board> {
+public class AISolver implements Solver<Board> {
 
     private DeikstraFindWay way;
     private Dice dice;
 
-    public ApofigSolver(Dice dice) {
+    public AISolver(Dice dice) {
         this.dice = dice;
         this.way = new DeikstraFindWay();
     }
@@ -130,7 +130,7 @@ public class ApofigSolver implements Solver<Board> {
 
     public static void start(String name, Dice dice) {
         WebSocketRunner.runAI(name,
-                new ApofigSolver(dice),
+                new AISolver(dice),
                 new Board());
     }
 
