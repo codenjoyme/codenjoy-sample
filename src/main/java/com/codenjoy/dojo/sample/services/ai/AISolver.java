@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.sample.client.ai;
+package com.codenjoy.dojo.sample.services.ai;
 
 /*-
  * #%L
