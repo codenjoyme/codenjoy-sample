@@ -39,7 +39,7 @@ import com.codenjoy.dojo.utils.whatsnext.WhatsNextUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import static com.codenjoy.dojo.sample.services.Event.*;
 
@@ -56,7 +56,7 @@ import static com.codenjoy.dojo.sample.services.Event.*;
  * связанную с ожиданием игроков между раундами, обратным отсчетом
  * времени перед стартом раунда и т.д.
  */
-public class Sample extends RoundField<Player> implements Field {
+public class Sample extends RoundField<Player, Hero> implements Field {
 
     private Level level;
     private PointField field;
@@ -205,7 +205,7 @@ public class Sample extends RoundField<Player> implements Field {
      * @return Список созданных игроков в новом измененном поле.
      */
     @Override
-    public List<Player> load(String board, Supplier<Player> player) {
+    public List<Player> load(String board, Function<Hero, Player> player) {
         level = new Level(board);
         return WhatsNextUtils.load(this, level.heroes(), player);
     }

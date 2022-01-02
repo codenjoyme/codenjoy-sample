@@ -35,8 +35,6 @@ import org.junit.Before;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.codenjoy.dojo.utils.TestUtils.asArray;
-
 public abstract class AbstractGameTest
         extends AbstractBaseGameTest<Player, Sample, GameSettings, Level, Hero> {
 
@@ -48,11 +46,6 @@ public abstract class AbstractGameTest
     @After
     public void after() {
         super.after();
-    }
-
-    @Override
-    protected void setupHeroesDice() {
-        dice(asArray(level().heroes()));
     }
 
     @Override

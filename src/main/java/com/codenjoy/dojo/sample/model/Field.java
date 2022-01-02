@@ -36,7 +36,7 @@ import java.util.Optional;
  * Объекты на поле хотят взаимодействовать с полем и делают они
  * с помощью этого интерфейса.
  */
-public interface Field extends RoundGameField<Player> {
+public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBarrier(Point pt);
 
