@@ -40,9 +40,9 @@ public interface Field extends RoundGameField<Player, Hero> {
 
     boolean isBarrier(Point pt);
 
-    Optional<Point> freeRandom(Player player);
-
     boolean isFree(Point pt);
+
+    Optional<Point> freeRandom(Player player);
 
     void setBomb(Hero hero);
 
