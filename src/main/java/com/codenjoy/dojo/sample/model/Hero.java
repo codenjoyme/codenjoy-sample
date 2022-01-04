@@ -112,9 +112,7 @@ public class Hero extends RoundPlayerHero<Field>
      * Сигнал сердцебиения. Так поле оповещает героя, что пришел тик.
      */
     @Override
-    public void tick() {
-        if (!isActiveAndAlive()) return;
-
+    public void tickHero() {
         if (bomb) {
             field.setBomb(this);
             bomb = false;
