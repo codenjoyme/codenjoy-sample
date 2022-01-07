@@ -26,6 +26,7 @@ package com.codenjoy.dojo.sample.model;
 import com.codenjoy.dojo.sample.model.items.Bomb;
 import com.codenjoy.dojo.sample.model.items.Gold;
 import com.codenjoy.dojo.sample.model.items.Wall;
+import com.codenjoy.dojo.sample.services.GameSettings;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.Accessor;
 import com.codenjoy.dojo.services.round.RoundGameField;
@@ -45,6 +46,8 @@ public interface Field extends RoundGameField<Player, Hero> {
     Optional<Point> freeRandom(Player player);
 
     void setBomb(Hero hero);
+
+    GameSettings settings();
 
     Accessor<Gold> gold();
 
