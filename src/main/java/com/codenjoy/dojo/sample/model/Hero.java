@@ -37,7 +37,7 @@ import com.codenjoy.dojo.services.round.RoundPlayerHero;
 
 import java.util.List;
 
-import static com.codenjoy.dojo.games.sample.Element.DEAD_HERO;
+import static com.codenjoy.dojo.games.sample.Element.HERO_DEAD;
 import static com.codenjoy.dojo.games.sample.Element.HERO;
 import static com.codenjoy.dojo.sample.services.Event.*;
 
@@ -165,7 +165,7 @@ public class Hero extends RoundPlayerHero<Field>
     public Element beforeState(Object[] alsoAtPoint) {
         return isActiveAndAlive()
                 ? HERO
-                : DEAD_HERO;
+                : HERO_DEAD;
     }
 
     /**
