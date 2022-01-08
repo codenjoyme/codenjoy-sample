@@ -32,6 +32,8 @@ import com.codenjoy.dojo.services.round.RoundPlayerHero;
 
 import java.util.List;
 
+import static com.codenjoy.dojo.games.sample.Element.DEAD_HERO;
+import static com.codenjoy.dojo.games.sample.Element.HERO;
 import static com.codenjoy.dojo.sample.services.Event.*;
 
 /**
@@ -146,19 +148,28 @@ public class Hero extends RoundPlayerHero<Field>
      */
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        if (!isActiveAndAlive()) {
-            if (this == player.getHero()) {
-                return Element.DEAD_HERO;
-            } else {
-                return Element.OTHER_DEAD_HERO;
-            }
+        boolean myHero = this == player.getHero();
+        Hero hero = myHero ? player.getHero() : this;
+
+        Element state = hero.state(alsoAtPoint);
+
+        if (!myHero) {
+            state = player.getHero().isMyTeam(hero)
+                ? state.otherHero()
+                : state.enemyHero();
         }
 
-        if (this == player.getHero()) {
-            return Element.HERO;
-        } else {
-            return Element.OTHER_HERO;
-        }
+        return state;
+    }
+
+    /**
+     * В начале пробуем получить изображение как если бы это был мой герой,
+     * позже его конвертнем в OTHER если надо.
+     */
+    private Element state(Object[] alsoAtPoint) {
+        return isActiveAndAlive()
+                ? HERO
+                : DEAD_HERO;
     }
 
     /**
@@ -185,7 +196,7 @@ public class Hero extends RoundPlayerHero<Field>
     }
 
     public void fireKillHero(Hero prey) {
-        if (getTeamId() == prey.getTeamId()) {
+        if (isMyTeam(prey)) {
             event(KILL_OTHER_HERO);
         } else {
             event(KILL_ENEMY_HERO);

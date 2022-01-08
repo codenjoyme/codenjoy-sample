@@ -149,7 +149,7 @@ public class MultiplayerTest extends AbstractGameTest {
     }
 
     @Test
-    public void anyOfTheHeroesCanExplodeOnABomb() {
+    public void anyOfTheHeroesCanExplodeOnABomb_caseSameTeam() {
         // given
         givenFl("☼☼☼☼☼☼\n" +
                 "☼☺ ☺ ☼\n" +
@@ -157,6 +157,10 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼ ☺  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n");
+
+        player(0).inTeam(0);
+        player(1).inTeam(0);
+        player(2).inTeam(0);
 
         hero(0).down();
         hero(0).bomb();
@@ -172,6 +176,20 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
+        assertF("☼☼☼☼☼☼\n" +
+                "☼x☺  ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☻  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼x☻  ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 2);
+
         // when
         hero(1).left();
         tick();
@@ -183,6 +201,20 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼ ☻  ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼X   ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☻  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼Y   ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 2);
 
         verifyAllEvents(
                 "listener(0) => [KILL_OTHER_HERO]\n" +
@@ -204,7 +236,126 @@ public class MultiplayerTest extends AbstractGameTest {
                 "☼   ☻☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
+        assertF("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☻  ☼\n" +
+                "☼   ☺☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼   ☻☼\n" +
+                "☼☼☼☼☼☼\n", 2);
+
         assertScores("hero(0)=5");
+    }
+
+    @Test
+    public void anyOfTheHeroesCanExplodeOnABomb_caseOtherTeam() {
+        // given
+        givenFl("☼☼☼☼☼☼\n" +
+                "☼☺ ☺ ☼\n" +
+                "☼    ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n");
+        
+        player(0).inTeam(0);
+        player(1).inTeam(1);
+        player(2).inTeam(0);
+
+        hero(0).down();
+        hero(0).bomb();
+
+        hero(1).left();
+
+        tick();
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼x♥  ☼\n" +
+                "☼☺   ☼\n" +
+                "☼ ☻  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼x☺  ☼\n" +
+                "☼♥   ☼\n" +
+                "☼ ♥  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼x♥  ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 2);
+
+        // when
+        hero(1).left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼\n" +
+                "☼Z   ☼\n" +
+                "☼☺   ☼\n" +
+                "☼ ☻  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼X   ☼\n" +
+                "☼♥   ☼\n" +
+                "☼ ♥  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼Z   ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 2);
+
+        verifyAllEvents(
+                "listener(0) => [KILL_ENEMY_HERO]\n" +
+                "listener(1) => [HERO_DIED]\n");
+
+        assertScores("hero(0)=10");
+
+        assertEquals(true, game(1).isGameOver());
+
+        dice(4, 1);
+        game(1).newGame();
+
+        tick();
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼☺   ☼\n" +
+                "☼ ☻  ☼\n" +
+                "☼   ♥☼\n" +
+                "☼☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼♥   ☼\n" +
+                "☼ ♥  ☼\n" +
+                "☼   ☺☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼    ☼\n" +
+                "☼☻   ☼\n" +
+                "☼ ☺  ☼\n" +
+                "☼   ♥☼\n" +
+                "☼☼☼☼☼☼\n", 2);
+
+        assertScores("hero(0)=10");
     }
 
     @Test
@@ -295,26 +446,26 @@ public class MultiplayerTest extends AbstractGameTest {
         assertF("☼☼☼☼☼☼\n" +
                 "☼☺ ☻ ☼\n" +
                 "☼x x ☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼♥ ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
         assertF("☼☼☼☼☼☼\n" +
                 "☼☻ ☺ ☼\n" +
                 "☼x x ☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼♥ ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 1);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼♥ ♥ ☼\n" +
                 "☼x x ☼\n" +
                 "☼☺ ☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 2);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼♥ ♥ ☼\n" +
                 "☼x x ☼\n" +
                 "☼☻ ☺ ☼\n" +
                 "☼    ☼\n" +
@@ -327,28 +478,28 @@ public class MultiplayerTest extends AbstractGameTest {
 
         assertF("☼☼☼☼☼☼\n" +
                 "☼☺   ☼\n" +
-                "☼Y Y ☼\n" +
-                "☼  ☻ ☼\n" +
+                "☼Z Y ☼\n" +
+                "☼  ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
         assertF("☼☼☼☼☼☼\n" +
                 "☼☻   ☼\n" +
-                "☼Y X ☼\n" +
-                "☼  ☻ ☼\n" +
+                "☼Z X ☼\n" +
+                "☼  ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 1);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻   ☼\n" +
-                "☼X Y ☼\n" +
+                "☼♥   ☼\n" +
+                "☼X Z ☼\n" +
                 "☼  ☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 2);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻   ☼\n" +
-                "☼Y Y ☼\n" +
+                "☼♥   ☼\n" +
+                "☼Y Z ☼\n" +
                 "☼  ☺ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 3);
@@ -392,30 +543,30 @@ public class MultiplayerTest extends AbstractGameTest {
         tick();
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☺ ☻ ☼\n" +
+                "☼☺ ♥ ☼\n" +
                 "☼x x ☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼☻ ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻ ☺ ☼\n" +
+                "☼♥ ☺ ☼\n" +
                 "☼x x ☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼♥ ☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 1);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼☻ ♥ ☼\n" +
                 "☼x x ☼\n" +
-                "☼☺ ☻ ☼\n" +
+                "☼☺ ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 2);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻ ☻ ☼\n" +
+                "☼♥ ☻ ☼\n" +
                 "☼x x ☼\n" +
-                "☼☻ ☺ ☼\n" +
+                "☼♥ ☺ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 3);
 
@@ -426,28 +577,28 @@ public class MultiplayerTest extends AbstractGameTest {
 
         assertF("☼☼☼☼☼☼\n" +
                 "☼☺   ☼\n" +
-                "☼Y Y ☼\n" +
-                "☼  ☻ ☼\n" +
+                "☼Y Z ☼\n" +
+                "☼  ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻   ☼\n" +
-                "☼Y X ☼\n" +
+                "☼♥   ☼\n" +
+                "☼Z X ☼\n" +
                 "☼  ☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 1);
 
         assertF("☼☼☼☼☼☼\n" +
                 "☼☻   ☼\n" +
-                "☼X Y ☼\n" +
-                "☼  ☻ ☼\n" +
+                "☼X Z ☼\n" +
+                "☼  ♥ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 2);
 
         assertF("☼☼☼☼☼☼\n" +
-                "☼☻   ☼\n" +
-                "☼Y Y ☼\n" +
+                "☼♥   ☼\n" +
+                "☼Z Y ☼\n" +
                 "☼  ☺ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 3);
