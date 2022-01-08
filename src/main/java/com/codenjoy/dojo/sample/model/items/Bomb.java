@@ -28,7 +28,7 @@ import com.codenjoy.dojo.sample.model.Hero;
 import com.codenjoy.dojo.sample.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 
 /**
  * Артефакт - бомба на поле.

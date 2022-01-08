@@ -25,10 +25,14 @@ package com.codenjoy.dojo.sample.model;
 
 import com.codenjoy.dojo.games.sample.Element;
 import com.codenjoy.dojo.sample.model.items.Bomb;
-import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.services.Direction;
+import com.codenjoy.dojo.services.Joystick;
+import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.joystick.Act;
 import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
 import com.codenjoy.dojo.services.round.RoundPlayerHero;
+import com.codenjoy.dojo.services.printer.state.State;
 
 import java.util.List;
 

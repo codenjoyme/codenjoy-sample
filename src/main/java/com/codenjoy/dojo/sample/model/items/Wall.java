@@ -27,7 +27,7 @@ import com.codenjoy.dojo.games.sample.Element;
 import com.codenjoy.dojo.sample.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 
 /**
  * Артефакт - стена на поле.
