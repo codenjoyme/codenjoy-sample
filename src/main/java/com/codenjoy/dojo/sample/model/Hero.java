@@ -31,8 +31,9 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.joystick.Act;
 import com.codenjoy.dojo.services.joystick.RoundsDirectionActJoystick;
-import com.codenjoy.dojo.services.round.RoundPlayerHero;
+import com.codenjoy.dojo.services.printer.state.HeroState;
 import com.codenjoy.dojo.services.printer.state.State;
+import com.codenjoy.dojo.services.round.RoundPlayerHero;
 
 import java.util.List;
 
@@ -55,7 +56,8 @@ import static com.codenjoy.dojo.sample.services.Event.*;
  * переключения раундов.
  */
 public class Hero extends RoundPlayerHero<Field>
-        implements RoundsDirectionActJoystick, State<Element, Player> {
+        implements RoundsDirectionActJoystick, State<Element, Player>,
+                   HeroState<Element, Hero, Player> {
 
     private int score;
     private Direction direction;
@@ -152,25 +154,15 @@ public class Hero extends RoundPlayerHero<Field>
      */
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        boolean myHero = this == player.getHero();
-        Hero hero = myHero ? player.getHero() : this;
-
-        Element state = hero.state(alsoAtPoint);
-
-        if (!myHero) {
-            state = player.getHero().isMyTeam(hero)
-                ? state.otherHero()
-                : state.enemyHero();
-        }
-
-        return state;
+        return HeroState.super.state(player, alsoAtPoint);
     }
 
     /**
      * В начале пробуем получить изображение как если бы это был мой герой,
      * позже его конвертнем в OTHER если надо.
      */
-    private Element state(Object[] alsoAtPoint) {
+    @Override
+    public Element beforeState(Object[] alsoAtPoint) {
         return isActiveAndAlive()
                 ? HERO
                 : DEAD_HERO;
