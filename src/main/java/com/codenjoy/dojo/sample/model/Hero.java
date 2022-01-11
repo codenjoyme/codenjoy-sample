@@ -56,7 +56,8 @@ import static com.codenjoy.dojo.sample.services.Event.*;
  * переключения раундов.
  */
 public class Hero extends RoundPlayerHero<Field>
-        implements RoundsDirectionActJoystick, State<Element, Player>,
+        implements RoundsDirectionActJoystick,
+                   State<Element, Player>,
                    HeroState<Element, Hero, Player> {
 
     private int score;
