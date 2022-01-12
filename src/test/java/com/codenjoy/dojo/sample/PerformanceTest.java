@@ -23,43 +23,36 @@ package com.codenjoy.dojo.sample;
  */
 
 
-import com.codenjoy.dojo.profile.Profiler;
 import com.codenjoy.dojo.sample.services.GameRunner;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.Game;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import com.codenjoy.dojo.utils.TestUtils;
+import com.codenjoy.dojo.sample.services.GameSettings;
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.mockito.Mockito.mock;
+import static com.codenjoy.dojo.utils.TestUtils.assertPerformance;
 
 public class PerformanceTest {
 
     @Test
     public void test() {
-        GameRunner gameType = new GameRunner();
 
-        List<Game> games = new LinkedList<>();
+        // about 6 sec
+        int players = 30;
+        int ticks = 1000;
 
-        PrinterFactory factory = new PrinterFactoryImpl();
-        for (int index = 0; index < 50; index++) {
-            Game game = TestUtils.buildGame(gameType, mock(EventListener.class), factory);
-            games.add(game);
-        }
+        int expectedCreation = 900;
+        int expectedTick = 2500;
+        int expectedPrint = 2200;
 
-        Profiler profiler = new Profiler();
+        GameRunner runner = new GameRunner(){
+            @Override
+            public GameSettings getSettings() {
+                return new GameSettings();
+            }
+        };
 
-        for (Game game : games) {
-            profiler.start();
-
-           game.getBoardAsString();
-
-            profiler.done("getBoardAsString");
-            profiler.print();
-        }
+        boolean printBoard = false;
+        assertPerformance(runner,
+                players, ticks,
+                expectedCreation, expectedTick, expectedPrint,
+                printBoard);
     }
 }
