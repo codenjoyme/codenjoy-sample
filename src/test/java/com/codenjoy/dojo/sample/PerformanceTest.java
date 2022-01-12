@@ -23,8 +23,10 @@ package com.codenjoy.dojo.sample;
  */
 
 
+import com.codenjoy.dojo.client.local.DiceGenerator;
 import com.codenjoy.dojo.sample.services.GameRunner;
 import com.codenjoy.dojo.sample.services.GameSettings;
+import com.codenjoy.dojo.services.Dice;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.utils.TestUtils.assertPerformance;
@@ -38,11 +40,18 @@ public class PerformanceTest {
         int players = 30;
         int ticks = 1000;
 
-        int expectedCreation = 900;
-        int expectedTick = 2500;
-        int expectedPrint = 2200;
+        int expectedCreation = 1000;
+        int expectedTick = 2800;
+        int expectedPrint = 3000;
 
+        Dice dice = new DiceGenerator().getDice(2000);
         GameRunner runner = new GameRunner(){
+
+            @Override
+            public Dice getDice() {
+                return dice;
+            }
+
             @Override
             public GameSettings getSettings() {
                 return new GameSettings();
