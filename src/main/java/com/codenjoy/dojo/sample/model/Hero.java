@@ -39,6 +39,7 @@ import java.util.List;
 
 import static com.codenjoy.dojo.games.sample.Element.HERO;
 import static com.codenjoy.dojo.games.sample.Element.HERO_DEAD;
+import static com.codenjoy.dojo.games.sample.ElementUtils.TEAM_ELEMENT;
 import static com.codenjoy.dojo.sample.services.Event.*;
 
 /**
@@ -159,7 +160,7 @@ public class Hero extends RoundPlayerHero<Field>
      */
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return HeroState.super.state(player, alsoAtPoint);
+        return HeroState.super.state(player, TEAM_ELEMENT, alsoAtPoint);
     }
 
     /**
