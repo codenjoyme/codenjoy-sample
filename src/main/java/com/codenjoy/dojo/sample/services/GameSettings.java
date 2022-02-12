@@ -24,8 +24,8 @@ package com.codenjoy.dojo.sample.services;
 
 
 import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
 import com.codenjoy.dojo.services.settings.AllSettings;
+import com.codenjoy.dojo.services.settings.PropertiesKey;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 
 import java.util.Arrays;
@@ -35,19 +35,19 @@ import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
 
 public class GameSettings extends SettingsImpl implements AllSettings<GameSettings> {
 
-    public enum Keys implements Key {
+    public enum Keys implements PropertiesKey {
 
-        GET_GOLD_SCORE("[Score] Pick gold score"),
-        WIN_ROUND_SCORE("[Score] Win round score"),
-        HERO_DIED_PENALTY("[Score] Hero died penalty"),
-        KILL_OTHER_HERO_SCORE("[Score] Kill other hero score"),
-        KILL_ENEMY_HERO_SCORE("[Score] Kill enemy hero score"),
-        SCORE_COUNTING_TYPE(ScoresImpl.SCORE_COUNTING_TYPE.key());
+        GET_GOLD_SCORE,
+        WIN_ROUND_SCORE,
+        HERO_DIED_PENALTY,
+        KILL_OTHER_HERO_SCORE,
+        KILL_ENEMY_HERO_SCORE,
+        SCORE_COUNTING_TYPE;
 
         private String key;
 
-        Keys(String key) {
-            this.key = key;
+        Keys() {
+            key = key(GameRunner.GAME_NAME);
         }
 
         @Override
