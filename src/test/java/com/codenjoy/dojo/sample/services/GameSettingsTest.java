@@ -22,7 +22,7 @@ package com.codenjoy.dojo.sample.services;
  * #L%
  */
 
-import com.codenjoy.dojo.client.Utils;
+import com.codenjoy.dojo.utils.TestUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -31,12 +31,12 @@ public class GameSettingsTest {
 
     @Test
     public void shouldGetAllKeys() {
-        assertEquals("[GET_GOLD_SCORE, \n" +
-                        "WIN_ROUND_SCORE, \n" +
-                        "HERO_DIED_PENALTY, \n" +
-                        "KILL_OTHER_HERO_SCORE, \n" +
-                        "KILL_ENEMY_HERO_SCORE, \n" +
-                        "SCORE_COUNTING_TYPE]",
-                Utils.split(new GameSettings().allKeys(), ", \n"));
+        assertEquals("GET_GOLD_SCORE        =[Score] Pick gold score\n" +
+                    "WIN_ROUND_SCORE       =[Score] Win round score\n" +
+                    "HERO_DIED_PENALTY     =[Score] Hero died penalty\n" +
+                    "KILL_OTHER_HERO_SCORE =[Score] Kill other hero score\n" +
+                    "KILL_ENEMY_HERO_SCORE =[Score] Kill enemy hero score\n" +
+                    "SCORE_COUNTING_TYPE   =[Score] Counting score mode",
+                TestUtils.toString(new GameSettings().allKeys()));
     }
 }
