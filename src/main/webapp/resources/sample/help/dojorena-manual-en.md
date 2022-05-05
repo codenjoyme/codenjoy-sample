@@ -10,8 +10,6 @@
 
 Проект игры (для написания собственного бота) вы можете найти [здесь](https://github.com/codenjoyme/codenjoy-clients.git).
 
-
-
 ## What the game about?
 
 You have to write your own bot for the hero, which will beat the other bots on points. Everyone plays on the same field. 
@@ -144,7 +142,6 @@ You can always see the settings of the current game
 Please ask Sensei about current game settings. You can find Sensei in
 the chat that the organizers have provided to discuss issues.
 
-
 ## Hints
 
 The first task is to write a websocket client that connects to the server. 
@@ -158,7 +155,6 @@ If you don't know where to start, try implementing the following algorithms:
 * Try not to get blown up by a bomb.
 * Place a bomb in the current cell, blocking the path of your opponents.
 * Find the nearest gold and pick it up.
-
 
 ## Client and API
 
@@ -213,5 +209,4 @@ If you have any questions reach me in [skype alexander.baglay](skype:alexander.b
 or email [apofig@gmail.com](mailto:apofig@gmail.com).
 
 Good luck and may the best win!
-
 
