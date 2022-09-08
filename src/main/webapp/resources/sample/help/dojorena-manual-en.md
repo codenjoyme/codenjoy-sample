@@ -162,7 +162,7 @@ If you don't know where to start, try implementing the following algorithms:
 <! -- description of controversial or unclear points in the game -->
 * 
 
-## <a id=""ask""></a> Ask Sensei
+## <a id="ask"></a> Ask Sensei
 
 You can always see the settings of the current game
 [here](/codenjoy-contest/rest/settings/player).
