@@ -92,6 +92,8 @@ C помощью этого regexp можно выкусить строку до
 левом верхнем углу и имеет координату `[0, 28]`. 
 В этом примере — позиция героя (символ `☺`) — `[8, 16]`.
 
+![](https://dojorena.io/codenjoy-contest/resources/sample/help/board.png)
+
 <meta charset="UTF-8">
 
 ## Symbol breakdown

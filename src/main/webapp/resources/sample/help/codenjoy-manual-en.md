@@ -113,6 +113,8 @@ you get a readable image of the field:
 The first character of the line corresponds to the cell located in the upper left corner and has the coordinate `[0, 28]`. 
 In this example, the hero's position (symbol `☺`) is `[8, 16]`.
 
+![](board.png)
+
 <meta charset="UTF-8">
 
 ## Symbol breakdown
