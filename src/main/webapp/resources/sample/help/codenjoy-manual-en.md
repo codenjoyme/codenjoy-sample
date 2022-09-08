@@ -150,14 +150,14 @@ There are several commands:
 
 ## Settings.
 
-The properties will change[*](#ask) as the game progresses.
+The properties will change[(?)](#ask) as the game progresses.
 are shown in the table below:
 
 | Event | Title | Points |
 |---------|----------|------|
-| WIN_SCORE | 30[*](#ask)
-| LOSE_PENALTY | -20[*](#ask)
-| WIN_ROUND_SCORE | 100[*](#ask)
+| WIN_SCORE | 30[(?)](#ask)
+| LOSE_PENALTY | -20[(?)](#ask)
+| WIN_ROUND_SCORE | 100[(?)](#ask)
 
 ## Cases
 
