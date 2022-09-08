@@ -175,6 +175,10 @@ If you don't know where to start, try implementing the following algorithms:
 * Place a bomb in the current cell, blocking the path of your opponents.
 * Find the nearest gold and pick it up.
 
+## FAQ
+<! -- description of controversial or unclear points in the game -->
+* 
+
 ## <a id=""ask""></a> Ask Sensei
 
 You can always see the settings of the current game
@@ -219,10 +223,6 @@ All languages in one way or another have a similar set of methods:
 * `Element getAt(Point point);`
   Element in the current cell.
 * and so on...
-
-## FAQ
-<! -- description of controversial or unclear points in the game -->
-* 
 
 ## Want to host an event?
 
