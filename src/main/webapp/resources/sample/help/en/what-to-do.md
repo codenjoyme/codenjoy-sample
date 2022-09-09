@@ -21,9 +21,12 @@ are shown in the table below:
 
 | Event | Title | Points |
 |---------|----------|------|
-| WIN_SCORE | 30[(?)](#ask)
-| LOSE_PENALTY | -20[(?)](#ask)
-| WIN_ROUND_SCORE | 100[(?)](#ask)
+| Points for picked up gold | WIN_SCORE | 30[(?)](#ask)
+| Hero death points | LOSE_PENALTY | -20[(?)](#ask)
+| Points for winning on the round | WIN_ROUND_SCORE | 100[(?)](#ask)
+| Points for killing other hero | KILL_OTHER_HERO_SCORE | 5[(?)](#ask)
+| Points for killing hero from other team | KILL_ENEMY_HERO_SCORE | 10[(?)](#ask)
+| Counting score mode | SCORE_COUNTING_TYPE | 0 (0 - Accumulate points consistently, 1 - Maximum points from the event, 2 - Maximum points from the series)[(?)](#ask) |
 
 ## Cases
 

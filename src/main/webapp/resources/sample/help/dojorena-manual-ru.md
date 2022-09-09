@@ -4,11 +4,17 @@
 
 ## Intro
 
-Игровой demo-сервер доступен так же в интернете 24/7 в целях ознакомления [Sample Free-For-All server.](https://dojorena.io/games/).
+Игровой demo-сервер доступен так же в интернете 24/7 в целях ознакомления
+[Доступный для всех сервер Sample](https://dojorena.io/games)
 
-Это игра с открытым исходным кодом. Чтобы создать свою игру, исправить ошибки в текущей версии или внести другие исправления, вам следует [форкнуть проект](https://github.com/codenjoyme/codenjoy). Описание есть в файле Readme.md в корне репозитория. В описании указано, что делать дальше.
+Это игра с открытым исходным кодом. Чтобы создать свою игру, 
+исправить ошибки в текущей версии или внести другие исправления, 
+вам следует [форкнуть проект](https://github.com/codenjoyme/codenjoy). 
+Описание есть в файле Readme.md в корне репозитория. В описании 
+указано, что делать дальше.
 
-Проект игры (для написания своего бота) вы можете найти [тут](https://github.com/codenjoyme/codenjoy-clients.git)
+Проект игры (для написания своего бота) вы можете найти 
+[тут](https://github.com/codenjoyme/codenjoy-clients.git)
 
 ## В чем суть игры?
 
@@ -99,6 +105,8 @@ C помощью этого regexp можно выкусить строку до
 левом верхнем углу и имеет координату `[0, 28]`. 
 В этом примере — позиция героя (символ `☺`) — `[8, 16]`.
 
+В этом примере — позиция героя (символ `☺`) — `[8, 16]`.
+
 <img src="/codenjoy-contest/resources/sample/help/board.png" style="height:auto;" />
 
 <meta charset="UTF-8">
@@ -106,16 +114,16 @@ C помощью этого regexp можно выкусить строку до
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
-|<img src="/codenjoy-contest/resources/sample/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | Empty place where the hero can go. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/wall.png" style="height:auto;" /> | `WALL('☼')` | Wall you cant walk through. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/hero.png" style="height:auto;" /> | `HERO('☺')` | Your hero. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/hero_dead.png" style="height:auto;" /> | `HERO_DEAD('X')` | Your hero died. His body will disappear in the next tick. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/other_hero.png" style="height:auto;" /> | `OTHER_HERO('☻')` | Heroes of other players. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/other_hero_dead.png" style="height:auto;" /> | `OTHER_HERO_DEAD('Y')` | Another player's hero died. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/enemy_hero.png" style="height:auto;" /> | `ENEMY_HERO('♥')` | Heroes of other players in other team. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/enemy_hero_dead.png" style="height:auto;" /> | `ENEMY_HERO_DEAD('Z')` | Player's Hero from the other team who died. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/gold.png" style="height:auto;" /> | `GOLD('$')` | Gold. It must be picked up. | 
-|<img src="/codenjoy-contest/resources/sample/sprite/bomb.png" style="height:auto;" /> | `BOMB('x')` | Bomb planted by the hero. You can blow up on it. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | Пустое место, куда можно перейти герою. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/wall.png" style="height:auto;" /> | `WALL('☼')` | стенка, через которую проходить нельзя. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/hero.png" style="height:auto;" /> | `HERO('☺')` | Твой герой. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/hero_dead.png" style="height:auto;" /> | `HERO_DEAD('X')` | Твой герой погиб. Его тело в следующем тике пропадет. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/other_hero.png" style="height:auto;" /> | `OTHER_HERO('☻')` | Герои других игроков. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/other_hero_dead.png" style="height:auto;" /> | `OTHER_HERO_DEAD('Y')` | Мертвые герои других игроков. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/enemy_hero.png" style="height:auto;" /> | `ENEMY_HERO('♥')` | Герои игроков в других командах. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/enemy_hero_dead.png" style="height:auto;" /> | `ENEMY_HERO_DEAD('Z')` | Герои игроков в других командах, которые погибли. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/gold.png" style="height:auto;" /> | `GOLD('$')` | Золото. Его можно поднять. | 
+|<img src="/codenjoy-contest/resources/sample/sprite/bomb.png" style="height:auto;" /> | `BOMB('x')` | Бомба установленная героем. Ты можешь на ней подорваться. | 
 
 
 ## Как играть?
@@ -150,6 +158,9 @@ C помощью этого regexp можно выкусить строку до
 | Очки за подобранное золото | WIN_SCORE | 30[(?)](#ask) |
 | Очки за смерть героя | LOSE_PENALTY | -20[(?)](#ask) |
 | Очки за победу на поле | WIN_ROUND_SCORE | 100[(?)](#ask) |
+| Очки за убийство другого героя | KILL_OTHER_HERO_SCORE | 5[(?)](#ask)
+| Очки за убийство героя из другой команды | KILL_ENEMY_HERO_SCORE | 10[(?)](#ask)
+| Режим подсчета очков | SCORE_COUNTING_TYPE | 0 (0 - Простой инкремент очков, 1 - Максимальное количество очков в комнате, 2 - Максимальное количество очков в серии между смертями героя)[(?)](#ask) |
 
 ## Кейзы
 

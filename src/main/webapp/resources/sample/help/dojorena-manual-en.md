@@ -4,11 +4,17 @@
 
 ## Intro
 
-Демо-сервер игры также доступен онлайн 24/7 для ознакомительных целей [Образец сервера Free-For-All.] (https://dojorena.io/games/).
+The game server for familiarization and practice you can always find here: 
+[Sample Free-For-All server](https://dojorena.io/games)
 
-Это игра с открытым исходным кодом. Чтобы создать свою собственную игру, исправить ошибки в текущей версии или внести другие исправления, вам следует [форк проекта](https://github.com/codenjoyme/codenjoy). Описание находится в файле Readme.md в корне репозитория. В описании сказано, что делать дальше.
+This is the open source game. To realize your game, correct errors 
+in the current version and make the other corrections, you should 
+[fork the project](https://github.com/codenjoyme/codenjoy) at first. 
+There is the description in the Readme.md file in the repository root. 
+It is specified in the description what to do next.
 
-Проект игры (для написания собственного бота) вы можете найти [здесь](https://github.com/codenjoyme/codenjoy-clients.git).
+Game project (for writing your bot) can be found 
+[here](https://github.com/codenjoyme/codenjoy-clients.git)
 
 ## What the game about?
 
@@ -96,6 +102,8 @@ you get a readable image of the field:
 The first character of the line corresponds to the cell located in the upper left corner and has the coordinate `[0, 28]`. 
 In this example, the hero's position (symbol `☺`) is `[8, 16]`.
 
+This is what you see on UI:
+
 <img src="/codenjoy-contest/resources/sample/help/board.png" style="height:auto;" />
 
 <meta charset="UTF-8">
@@ -138,9 +146,12 @@ are shown in the table below:
 
 | Event | Title | Points |
 |---------|----------|------|
-| WIN_SCORE | 30[(?)](#ask)
-| LOSE_PENALTY | -20[(?)](#ask)
-| WIN_ROUND_SCORE | 100[(?)](#ask)
+| Points for picked up gold | WIN_SCORE | 30[(?)](#ask)
+| Hero death points | LOSE_PENALTY | -20[(?)](#ask)
+| Points for winning on the round | WIN_ROUND_SCORE | 100[(?)](#ask)
+| Points for killing other hero | KILL_OTHER_HERO_SCORE | 5[(?)](#ask)
+| Points for killing hero from other team | KILL_ENEMY_HERO_SCORE | 10[(?)](#ask)
+| Counting score mode | SCORE_COUNTING_TYPE | 0 (0 - Accumulate points consistently, 1 - Maximum points from the event, 2 - Maximum points from the series)[(?)](#ask) |
 
 ## Cases
 
@@ -159,8 +170,6 @@ If you don't know where to start, try implementing the following algorithms:
 * Find the nearest gold and pick it up.
 
 ## FAQ
-<! -- description of controversial or unclear points in the game -->
-* 
 
 ## <a id="ask"></a> Ask Sensei
 
