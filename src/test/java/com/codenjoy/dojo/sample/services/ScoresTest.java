@@ -104,7 +104,7 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldStillZeroAfterDead() {
+    public void shouldNotBeLessThanZero() {
         // given
         givenScores(0);
 
