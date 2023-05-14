@@ -104,7 +104,7 @@ In this example, the hero's position (symbol `☺`) is `[8, 16]`.
 
 This is what you see on UI:
 
-<img src="/codenjoy-contest/resources/sample/help/board.png" style="height:auto;" />
+<img src="/codenjoy-contest/resources/sample/img/board/large.png" style="height:auto;" />
 
 <meta charset="UTF-8">
 
