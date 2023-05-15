@@ -22,49 +22,69 @@ package com.codenjoy.dojo.sample.model;
  * #L%
  */
 
-import com.codenjoy.dojo.client.local.DiceGenerator;
-import com.codenjoy.dojo.sample.TestGameSettings;
+import com.codenjoy.dojo.sample.services.Event;
 import com.codenjoy.dojo.sample.services.GameRunner;
 import com.codenjoy.dojo.sample.services.GameSettings;
-import com.codenjoy.dojo.services.*;
-import com.codenjoy.dojo.services.dice.NumbersDice;
-import com.codenjoy.dojo.services.multiplayer.*;
-import com.codenjoy.dojo.services.room.RoomService;
-import com.codenjoy.dojo.utils.smart.SmartAssert;
+import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.GameType;
+import com.codenjoy.dojo.services.multiplayer.TriFunction;
+import com.codenjoy.dojo.utils.gametest.NewAbstractBaseGameTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
+import static com.codenjoy.dojo.services.event.Mode.CUMULATIVELY;
+import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 
-public class NewGameTest {
-
-    private Deals all;
-    private NumbersDice dice;
-    private RoomService rooms;
-
-    private List<Deal> deals = new LinkedList<>();
+public class NewGameTest extends NewAbstractBaseGameTest<Player, Sample, GameSettings, Level, Hero> {
 
     @Before
-    public void before() {
-        rooms = new RoomService();
-        FieldService fields = new FieldService(0);
-        Spreader spreader = new Spreader(fields);
+    public void setup() {
+        super.setup();
+    }
 
-        all = new Deals(spreader, rooms);
-        ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
-        all.init(lock);
-        all.onAdd(deal -> assertNotNull(deal));
-        all.onRemove(deal -> assertNotNull(deal));
+    @After
+    public void after() {
+        super.after();
+    }
 
-        Dice random = new DiceGenerator().getDice();
-        dice = new NumbersDice(random::next);
+    @Override
+    protected void setupSettings(GameSettings settings) {
+        settings.initScore(CUMULATIVELY)
+                .bool(ROUNDS_ENABLED, false)
+                .integer(GET_GOLD_SCORE, 30)
+                .integer(HERO_DIED_PENALTY, -10)
+                .integer(WIN_ROUND_SCORE, 20);;
+    }
+
+    @Override
+    protected Function<String, Level> createLevel() {
+        return Level::new;
+    }
+
+    @Override
+    protected BiFunction<EventListener, GameSettings, Player> createPlayer() {
+        return Player::new;
+    }
+
+    @Override
+    protected TriFunction<Dice, Level, GameSettings, Sample> createField() {
+        return Sample::new;
+    }
+
+    @Override
+    protected Class<?> eventClass() {
+        return Event.class;
+    }
+
+    @Override
+    protected GameType gameType() {
+        return new GameRunner();
     }
 
     @Test
@@ -96,13 +116,14 @@ public class NewGameTest {
 
         // when
         hero().left();
+        dice().will(2, 1); // new gold
         tick();
 
         // then
         assertF("☼☼☼☼☼\n" +
                 "☼☺ $☼\n" +
-                "☼$  ☼\n" +
-                "☼$ $☼\n" +
+                "☼   ☼\n" +
+                "☼$$$☼\n" +
                 "☼☼☼☼☼\n");
     }
 
@@ -131,6 +152,8 @@ public class NewGameTest {
         // when
         hero(0).up();
         hero(1).down();
+        dice().will(1, 2,  // new gold
+                    3, 2); // new gold
         tick();
 
         // then
@@ -146,102 +169,4 @@ public class NewGameTest {
                 "☼$ ☺☼\n" +
                 "☼☼☼☼☼\n", 1);
     }
-
-    private void givenFl(String map) {
-        String room = "room";
-        long now = Calendar.getInstance().getTimeInMillis();
-
-        GameRunner gameType = new GameRunner(){
-            @Override
-            public Dice getDice() {
-                return dice;
-            }
-
-            @Override
-            public GameSettings getSettings() {
-                int level = LevelProgress.levelsStartsFrom1;
-                return new TestGameSettings()
-                        .clearLevelMaps(level)
-                        .setLevelMap(level, map);
-            }
-        };
-
-        rooms.create(room, gameType);
-
-        Level level = new Level(map);
-        List<Hero> heroes = level.heroes();
-
-        all.onField(deal -> {
-            Hero hero = heroes.get(index());
-            dice.will(hero.getX(), hero.getY());
-            // then will call field.newGame(player) and finding place for hero with dice
-        });
-
-        for (Hero hero : heroes) {
-            Deal deal = all.deal(PlayerSave.NULL, room, "player" + index(), "callbackUrl", gameType, now);
-            deals.add(deal);
-        }
-    }
-
-    private int index() {
-        return deals.size();
-    }
-
-    private GamePlayer player(PlayerHero hero, GameSettings settings) {
-        Player player = new Player(null, settings);
-        player.setHero((Hero) hero);
-        return player;
-    }
-
-    private void tick() {
-        all.tick();
-    }
-
-    @After
-    public void after() {
-        SmartAssert.checkResult();
-    }
-
-    // public getters
-
-    public Deal deal() {
-        return deal(0);
-    }
-
-    public Deal deal(int index) {
-        return deals.get(index);
-    }
-
-    public Game game() {
-        return game(0);
-    }
-
-    public Game game(int index) {
-        return deal(index).getGame();
-    }
-
-    public Joystick hero() {
-        return deal().getJoystick();
-    }
-
-    public Joystick hero(int index) {
-        return deal(index).getJoystick();
-    }
-
-    // common asserts
-
-    public void assertF(String expected) {
-        assertF(expected, 0);
-    }
-
-    /**
-     * Проверяет одну борду с заданным индексом.
-     * @param expected Ожидаемое значение.
-     * @param index Индекс игрока.
-     */
-    public void assertF(String expected, int index) {
-        assertEquals(expected, game(index).getBoardAsString(true));
-    }
-
-
 }
