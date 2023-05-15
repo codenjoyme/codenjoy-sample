@@ -28,7 +28,11 @@ import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.event.Mode.CUMULATIVELY;
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 
-public class TestGameSettings {
+public class TestGameSettings extends GameSettings {
+
+    public TestGameSettings() {
+        update(this);
+    }
 
     /**
      * Here you can override the settings for all tests.

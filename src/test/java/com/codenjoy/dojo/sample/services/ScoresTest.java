@@ -60,7 +60,7 @@ public class ScoresTest {
 
     @Before
     public void setup() {
-         settings = TestGameSettings.update(new GameSettings());
+         settings = new TestGameSettings();
     }
 
     @Test
