@@ -27,9 +27,8 @@ import com.codenjoy.dojo.sample.TestGameSettings;
 import com.codenjoy.dojo.sample.services.GameRunner;
 import com.codenjoy.dojo.sample.services.GameSettings;
 import com.codenjoy.dojo.services.*;
-import com.codenjoy.dojo.services.multiplayer.FieldService;
-import com.codenjoy.dojo.services.multiplayer.LevelProgress;
-import com.codenjoy.dojo.services.multiplayer.Spreader;
+import com.codenjoy.dojo.services.dice.NumbersDice;
+import com.codenjoy.dojo.services.multiplayer.*;
 import com.codenjoy.dojo.services.room.RoomService;
 import com.codenjoy.dojo.utils.smart.SmartAssert;
 import org.junit.After;
@@ -47,7 +46,7 @@ import static org.junit.Assert.assertNotNull;
 public class NewGameTest {
 
     private Deals all;
-    private Dice dice;
+    private NumbersDice dice;
     private RoomService rooms;
 
     private List<Deal> deals = new LinkedList<>();
@@ -64,23 +63,24 @@ public class NewGameTest {
         all.onAdd(deal -> assertNotNull(deal));
         all.onRemove(deal -> assertNotNull(deal));
 
-        dice = new DiceGenerator(message -> System.out.println(message)).getDice();
+        Dice random = new DiceGenerator().getDice();
+        dice = new NumbersDice(random::next);
     }
 
     @Test
-    public void test() {
+    public void testOnePlayer() {
         // given
         givenFl("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
+                "☼$ $☼\n" +
                 "☼ ☺ ☼\n" +
-                "☼   ☼\n" +
+                "☼$ $☼\n" +
                 "☼☼☼☼☼\n");
 
         // then
         assertF("☼☼☼☼☼\n" +
-                "☼   ☼\n" +
-                "☼☺  ☼\n" +
-                "☼   ☼\n" +
+                "☼$ $☼\n" +
+                "☼ ☺ ☼\n" +
+                "☼$ $☼\n" +
                 "☼☼☼☼☼\n");
 
         // when
@@ -89,13 +89,68 @@ public class NewGameTest {
 
         // then
         assertF("☼☼☼☼☼\n" +
-                "☼☺  ☼\n" +
+                "☼$☺$☼\n" +
                 "☼   ☼\n" +
-                "☼   ☼\n" +
+                "☼$ $☼\n" +
+                "☼☼☼☼☼\n");
+
+        // when
+        hero().left();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼☺ $☼\n" +
+                "☼$  ☼\n" +
+                "☼$ $☼\n" +
                 "☼☼☼☼☼\n");
     }
 
-    private void givenFl(String... map) {
+    @Test
+    public void testTwoPlayers() {
+        // given
+        givenFl("☼☼☼☼☼\n" +
+                "☼$ $☼\n" +
+                "☼☺ ☺☼\n" +
+                "☼$ $☼\n" +
+                "☼☼☼☼☼\n");
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼$ $☼\n" +
+                "☼☺ ☻☼\n" +
+                "☼$ $☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼$ $☼\n" +
+                "☼☻ ☺☼\n" +
+                "☼$ $☼\n" +
+                "☼☼☼☼☼\n", 1);
+
+        // when
+        hero(0).up();
+        hero(1).down();
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼\n" +
+                "☼☺ $☼\n" +
+                "☼$ $☼\n" +
+                "☼$ ☻☼\n" +
+                "☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼\n" +
+                "☼☻ $☼\n" +
+                "☼$ $☼\n" +
+                "☼$ ☺☼\n" +
+                "☼☼☼☼☼\n", 1);
+    }
+
+    private void givenFl(String map) {
+        String room = "room";
+        long now = Calendar.getInstance().getTimeInMillis();
+
         GameRunner gameType = new GameRunner(){
             @Override
             public Dice getDice() {
@@ -107,16 +162,35 @@ public class NewGameTest {
                 int level = LevelProgress.levelsStartsFrom1;
                 return new TestGameSettings()
                         .clearLevelMaps(level)
-                        .setLevelMaps(level, map);
+                        .setLevelMap(level, map);
             }
         };
 
-        long now = Calendar.getInstance().getTimeInMillis();
+        rooms.create(room, gameType);
 
-        rooms.create("room", gameType);
-        Deal deal = all.deal(PlayerSave.NULL, "room", "player", "callbackUrl", gameType, now);
+        Level level = new Level(map);
+        List<Hero> heroes = level.heroes();
 
-        deals.add(deal);
+        all.onField(deal -> {
+            Hero hero = heroes.get(index());
+            dice.will(hero.getX(), hero.getY());
+            // then will call field.newGame(player) and finding place for hero with dice
+        });
+
+        for (Hero hero : heroes) {
+            Deal deal = all.deal(PlayerSave.NULL, room, "player" + index(), "callbackUrl", gameType, now);
+            deals.add(deal);
+        }
+    }
+
+    private int index() {
+        return deals.size();
+    }
+
+    private GamePlayer player(PlayerHero hero, GameSettings settings) {
+        Player player = new Player(null, settings);
+        player.setHero((Hero) hero);
+        return player;
     }
 
     private void tick() {
