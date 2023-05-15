@@ -24,11 +24,13 @@ package com.codenjoy.dojo.sample.model;
 
 import com.codenjoy.dojo.sample.TestGameSettings;
 import com.codenjoy.dojo.sample.services.Event;
+import com.codenjoy.dojo.sample.services.GameRunner;
 import com.codenjoy.dojo.sample.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.GameType;
 import com.codenjoy.dojo.services.multiplayer.TriFunction;
-import com.codenjoy.dojo.utils.gametest.AbstractBaseGameTest;
+import com.codenjoy.dojo.utils.gametest.NewAbstractBaseGameTest;
 import org.junit.After;
 import org.junit.Before;
 
@@ -36,7 +38,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class AbstractGameTest
-        extends AbstractBaseGameTest<Player, Sample, GameSettings, Level, Hero> {
+        extends NewAbstractBaseGameTest<Player, Sample, GameSettings, Level, Hero> {
 
     @Before
     public void setup() {
@@ -49,8 +51,13 @@ public abstract class AbstractGameTest
     }
 
     @Override
-    protected GameSettings setupSettings() {
-        return new TestGameSettings();
+    protected GameType gameType() {
+        return new GameRunner();
+    }
+
+    @Override
+    protected GameSettings setupSettings(GameSettings settings) {
+        return TestGameSettings.update(settings);
     }
 
     @Override
@@ -72,6 +79,4 @@ public abstract class AbstractGameTest
     protected Class<?> eventClass() {
         return Event.class;
     }
-
-    // other methods
 }

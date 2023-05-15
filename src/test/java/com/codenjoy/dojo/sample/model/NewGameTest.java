@@ -22,70 +22,9 @@ package com.codenjoy.dojo.sample.model;
  * #L%
  */
 
-import com.codenjoy.dojo.sample.services.Event;
-import com.codenjoy.dojo.sample.services.GameRunner;
-import com.codenjoy.dojo.sample.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.GameType;
-import com.codenjoy.dojo.services.multiplayer.TriFunction;
-import com.codenjoy.dojo.utils.gametest.NewAbstractBaseGameTest;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
-import static com.codenjoy.dojo.services.event.Mode.CUMULATIVELY;
-import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
-
-public class NewGameTest extends NewAbstractBaseGameTest<Player, Sample, GameSettings, Level, Hero> {
-
-    @Before
-    public void setup() {
-        super.setup();
-    }
-
-    @After
-    public void after() {
-        super.after();
-    }
-
-    @Override
-    protected void setupSettings(GameSettings settings) {
-        settings.initScore(CUMULATIVELY)
-                .bool(ROUNDS_ENABLED, false)
-                .integer(GET_GOLD_SCORE, 30)
-                .integer(HERO_DIED_PENALTY, -10)
-                .integer(WIN_ROUND_SCORE, 20);;
-    }
-
-    @Override
-    protected Function<String, Level> createLevel() {
-        return Level::new;
-    }
-
-    @Override
-    protected BiFunction<EventListener, GameSettings, Player> createPlayer() {
-        return Player::new;
-    }
-
-    @Override
-    protected TriFunction<Dice, Level, GameSettings, Sample> createField() {
-        return Sample::new;
-    }
-
-    @Override
-    protected Class<?> eventClass() {
-        return Event.class;
-    }
-
-    @Override
-    protected GameType gameType() {
-        return new GameRunner();
-    }
+public class NewGameTest extends AbstractGameTest {
 
     @Test
     public void testOnePlayer() {
@@ -125,6 +64,8 @@ public class NewGameTest extends NewAbstractBaseGameTest<Player, Sample, GameSet
                 "☼   ☼\n" +
                 "☼$$$☼\n" +
                 "☼☼☼☼☼\n");
+
+        verifyAllEvents("[GET_GOLD]");
     }
 
     @Test
@@ -168,5 +109,9 @@ public class NewGameTest extends NewAbstractBaseGameTest<Player, Sample, GameSet
                 "☼$ $☼\n" +
                 "☼$ ☺☼\n" +
                 "☼☼☼☼☼\n", 1);
+
+        verifyAllEvents(
+                "listener(0) => [GET_GOLD]\n" +
+                "listener(1) => [GET_GOLD]\n");
     }
 }

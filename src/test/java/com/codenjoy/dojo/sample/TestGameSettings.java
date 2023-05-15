@@ -28,16 +28,17 @@ import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
 import static com.codenjoy.dojo.services.event.Mode.CUMULATIVELY;
 import static com.codenjoy.dojo.services.round.RoundSettings.Keys.ROUNDS_ENABLED;
 
-public class TestGameSettings extends GameSettings {
+public class TestGameSettings {
 
     /**
      * Here you can override the settings for all tests.
      */
-    public TestGameSettings() {
-        initScore(CUMULATIVELY);
-        bool(ROUNDS_ENABLED, false);
-        integer(GET_GOLD_SCORE, 30);
-        integer(HERO_DIED_PENALTY, -10);
-        integer(WIN_ROUND_SCORE, 20);
+    public static GameSettings update(GameSettings settings) {
+        return settings
+                .initScore(CUMULATIVELY)
+                .bool(ROUNDS_ENABLED, false)
+                .integer(GET_GOLD_SCORE, 30)
+                .integer(HERO_DIED_PENALTY, -10)
+                .integer(WIN_ROUND_SCORE, 20);
     }
 }

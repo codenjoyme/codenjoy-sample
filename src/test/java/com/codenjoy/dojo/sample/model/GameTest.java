@@ -520,7 +520,7 @@ public class GameTest extends AbstractGameTest {
 
         // when
         dice(1, 2); // new hero position
-        field().clearScore();
+        game().clearScore();
 
         // then
         assertF("☼☼☼☼☼\n" +

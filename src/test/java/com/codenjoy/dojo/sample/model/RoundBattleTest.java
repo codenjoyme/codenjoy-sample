@@ -31,8 +31,8 @@ import static com.codenjoy.dojo.services.round.RoundSettings.Keys.*;
 public class RoundBattleTest extends AbstractGameTest {
 
     @Override
-    protected GameSettings setupSettings() {
-        return super.setupSettings()
+    protected GameSettings setupSettings(GameSettings settings) {
+        return super.setupSettings(settings)
                 .bool(ROUNDS_ENABLED, true)
                 .integer(ROUNDS_TIME_BEFORE_START, 5)
                 .integer(ROUNDS_PER_MATCH, 3)
@@ -331,12 +331,8 @@ public class RoundBattleTest extends AbstractGameTest {
         assertScores("hero(0)=5");
 
         // when
+        dice(4, 4); // новые координаты для героя
         tick();
-
-        // новые координаты для героя
-        dice(4, 4);
-        // это сделает сервер в ответ на isAlive = false
-        game(2).newGame();
 
         // then
         // игрок уже живой, но неактивный до начала следующего раунда
@@ -500,28 +496,29 @@ public class RoundBattleTest extends AbstractGameTest {
                 "hero(2)=100");
 
         // when
+        dice(4, 4);
         hero(2).up();
         tick();
 
         // then
         assertF("☼☼☼☼☼☼\n" +
+                "☼   Y☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼YY☺ ☼\n" +
+                "☼ Y☺ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 0);
 
         assertF("☼☼☼☼☼☼\n" +
+                "☼   X☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼XY☻ ☼\n" +
+                "☼ Y☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 1);
 
         assertF("☼☼☼☼☼☼\n" +
+                "☼   Y☼\n" +
                 "☼    ☼\n" +
-                "☼    ☼\n" +
-                "☼YX☻ ☼\n" +
+                "☼ X☻ ☼\n" +
                 "☼    ☼\n" +
                 "☼☼☼☼☼☼\n", 2);
 
@@ -529,9 +526,42 @@ public class RoundBattleTest extends AbstractGameTest {
                 "listener(0) => [KILL_OTHER_HERO, WIN_ROUND]\n" +
                 "listener(2) => [HERO_DIED]\n");
 
-        assertScores(
+        assertScores(false,
                 "hero(0)=230\n" +
-                "hero(1)=50\n" +
+                "hero(1)=0\n" +
                 "hero(2)=50");
+
+        // when
+        dice(3, 4);
+        tick();
+
+        // then
+        assertF("☼☼☼☼☼☼\n" +
+                "☼  YY☼\n" +
+                "☼    ☼\n" +
+                "☼  ☺ ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 0);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼  YX☼\n" +
+                "☼    ☼\n" +
+                "☼  ☻ ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 1);
+
+        assertF("☼☼☼☼☼☼\n" +
+                "☼  XY☼\n" +
+                "☼    ☼\n" +
+                "☼  ☻ ☼\n" +
+                "☼    ☼\n" +
+                "☼☼☼☼☼☼\n", 2);
+
+        verifyAllEvents("");
+
+        assertScores(false,
+                "hero(0)=230\n" +
+                "hero(1)=0\n" +
+                "hero(2)=0");
     }
 }
