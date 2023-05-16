@@ -26,15 +26,11 @@ import com.codenjoy.dojo.sample.TestGameSettings;
 import com.codenjoy.dojo.sample.services.Event;
 import com.codenjoy.dojo.sample.services.GameRunner;
 import com.codenjoy.dojo.sample.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.GameType;
-import com.codenjoy.dojo.services.multiplayer.TriFunction;
 import com.codenjoy.dojo.utils.gametest.NewAbstractBaseGameTest;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class AbstractGameTest
@@ -63,16 +59,6 @@ public abstract class AbstractGameTest
     @Override
     protected Function<String, Level> createLevel() {
         return Level::new;
-    }
-
-    @Override
-    protected BiFunction<EventListener, GameSettings, Player> createPlayer() {
-        return Player::new;
-    }
-
-    @Override
-    protected TriFunction<Dice, Level, GameSettings, Sample> createField() {
-        return Sample::new;
     }
 
     @Override
