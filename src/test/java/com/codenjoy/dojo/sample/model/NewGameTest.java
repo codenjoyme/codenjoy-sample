@@ -55,7 +55,7 @@ public class NewGameTest extends AbstractGameTest {
 
         // when
         hero().left();
-        dice().will(2, 1); // new gold
+        dice(2, 1); // new gold
         tick();
 
         // then
@@ -93,8 +93,8 @@ public class NewGameTest extends AbstractGameTest {
         // when
         hero(0).up();
         hero(1).down();
-        dice().will(1, 2,  // new gold
-                    3, 2); // new gold
+        dice(1, 2,  // new gold
+            3, 2); // new gold
         tick();
 
         // then

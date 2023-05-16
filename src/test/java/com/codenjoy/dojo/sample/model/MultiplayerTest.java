@@ -134,7 +134,6 @@ public class MultiplayerTest extends AbstractGameTest {
         // when
         dice(4, 1);
         game(1).newGame();
-
         tick();
 
         // then
@@ -222,12 +221,18 @@ public class MultiplayerTest extends AbstractGameTest {
 
         assertScores("hero(0)=5");
 
-        assertEquals(true, game(1).isGameOver());
+        assertHeroStatus(
+                "active:\n" +
+                "hero(0)=true\n" +
+                "hero(1)=true\n" +
+                "hero(2)=true\n" +
+                "alive\n" +
+                "hero(0)=true\n" +
+                "hero(1)=false\n" +
+                "hero(2)=true");
 
         dice(4, 1);
-        game(1).newGame();
-
-        tick();
+        tick(); // new game for hero1
 
         assertF("☼☼☼☼☼☼\n" +
                 "☼    ☼\n" +
@@ -327,11 +332,17 @@ public class MultiplayerTest extends AbstractGameTest {
 
         assertScores("hero(0)=10");
 
-        assertEquals(true, game(1).isGameOver());
+        assertHeroStatus(
+                "active:\n" +
+                        "hero(0)=true\n" +
+                        "hero(1)=true\n" +
+                        "hero(2)=true\n" +
+                        "alive\n" +
+                        "hero(0)=true\n" +
+                        "hero(1)=false\n" +
+                        "hero(2)=true");
 
         dice(4, 1);
-        game(1).newGame();
-
         tick();
 
         assertF("☼☼☼☼☼☼\n" +
@@ -370,9 +381,7 @@ public class MultiplayerTest extends AbstractGameTest {
 
         // when
         hero(1).right();
-
         dice(1, 2);
-
         tick();
 
         // then

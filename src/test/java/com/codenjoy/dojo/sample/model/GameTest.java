@@ -401,7 +401,6 @@ public class GameTest extends AbstractGameTest {
                 "☼☼☼☼☼\n");
 
         // when
-        dice(1, 2);
         hero().up();
         tick();
 
@@ -415,7 +414,7 @@ public class GameTest extends AbstractGameTest {
         verifyAllEvents("[HERO_DIED]");
 
         // when
-        game().newGame();
+        dice(1, 2);
         tick();
 
         // then
