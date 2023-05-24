@@ -26,6 +26,7 @@ package com.codenjoy.dojo.sample.services.ai;
 import com.codenjoy.dojo.JavaRunner;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.sample.Board;
+import com.codenjoy.dojo.sample.services.GameRunner;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -42,8 +43,7 @@ import static com.codenjoy.dojo.games.sample.Element.GOLD;
  * Реализуй его как хочешь, хоть на Random (только используй для этого
  * {@link Dice} что приходит через конструктор).
  *
- * Для его запуска воспользуйся подходом {@link JavaRunner}
- * TODO сделать этот подход удобным, а то как сейчас вообще запускать?
+ * Для его запуска воспользуйся подходом {@link JavaRunner} описанным в main методе.
  */
 public class AISolver implements Solver<Board> {
 
@@ -84,5 +84,10 @@ public class AISolver implements Solver<Board> {
         }
         DeikstraFindWay.Possible map = possible(board);
         return way.getShortestWay(size, from, to, map);
+    }
+
+    public static void main(String[] args) {
+        Solver.run(GameRunner.GAME_NAME,
+                "http://127.0.0.1:8080/codenjoy-contest/board/player/0?code=000000000000");
     }
 }
