@@ -169,6 +169,16 @@ If you don't know where to start, try implementing the following algorithms:
 * Place a bomb in the current cell, blocking the path of your opponents.
 * Find the nearest gold and pick it up.
 
+| Settings name | Action |
+|---------------|--------|
+| GET_GOLD_SCORE | [Score] Pick gold score |
+| KILL_OTHER_HERO_SCORE | [Score] Kill other hero score |
+| HERO_DIED_PENALTY | [Score] Hero died penalty |
+| WIN_ROUND_SCORE | [Score] Win round score |
+| KILL_ENEMY_HERO_SCORE | [Score] Kill enemy hero score |
+| SCORE_COUNTING_TYPE | [Score] Counting score mode |
+
+
 ## FAQ
 
 ## <a id="ask"></a> Ask Sensei
