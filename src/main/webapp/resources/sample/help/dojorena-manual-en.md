@@ -169,6 +169,11 @@ If you don't know where to start, try implementing the following algorithms:
 * Place a bomb in the current cell, blocking the path of your opponents.
 * Find the nearest gold and pick it up.
 
+## Settings
+
+The parameters will change[(?)](#ask) as the game progresses.
+The default values are shown in the table below:
+
 | Settings name | Action |
 |---------------|--------|
 | GET_GOLD_SCORE | [Score] Pick gold score |
