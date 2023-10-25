@@ -139,20 +139,6 @@ There are several commands:
     Movement commands can be combined with the command `ACT`, 
     separating them with a comma - which means that for one tick of the game will be left bomb, and then the movement `LEFT, ACT` or vice versa `ACT, LEFT`.
 
-## Settings.
-
-The properties will change[(?)](#ask) as the game progresses.
-are shown in the table below:
-
-| Event | Title | Points |
-|---------|----------|------|
-| Points for picked up gold | WIN_SCORE | 30[(?)](#ask)
-| Hero death points | LOSE_PENALTY | -20[(?)](#ask)
-| Points for winning on the round | WIN_ROUND_SCORE | 100[(?)](#ask)
-| Points for killing other hero | KILL_OTHER_HERO_SCORE | 5[(?)](#ask)
-| Points for killing hero from other team | KILL_ENEMY_HERO_SCORE | 10[(?)](#ask)
-| Counting score mode | SCORE_COUNTING_TYPE | 0 (0 - Accumulate points consistently, 1 - Maximum points from the event, 2 - Maximum points from the series)[(?)](#ask) |
-
 ## Cases
 
 ## Hints
