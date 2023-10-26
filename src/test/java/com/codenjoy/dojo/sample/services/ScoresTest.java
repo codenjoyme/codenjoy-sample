@@ -24,182 +24,104 @@ package com.codenjoy.dojo.sample.services;
 
 
 import com.codenjoy.dojo.sample.TestGameSettings;
-import com.codenjoy.dojo.services.PlayerScores;
-import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
-import org.junit.Before;
+import com.codenjoy.dojo.services.event.EventObject;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.sample.services.GameSettings.Keys.*;
-import static org.junit.Assert.assertEquals;
 
-public class ScoresTest {
+public class ScoresTest extends AbstractScoresTest {
 
-    private PlayerScores scores;
-    private GameSettings settings;
-
-    public void heroDied() {
-        scores.event(Event.HERO_DIED);
+    @Override
+    public GameSettings settings() {
+        return new TestGameSettings()
+                .integer(GET_GOLD_SCORE, 30)
+                .integer(HERO_DIED_PENALTY, -10)
+                .integer(WIN_ROUND_SCORE, 20);
     }
 
-    public void getGold() {
-        scores.event(Event.GET_GOLD);
+    @Override
+    protected Class<? extends ScoresMap> scores() {
+        return Scores.class;
     }
 
-    public void winRound() {
-        scores.event(Event.WIN_ROUND);
-    }
-
-    public void killOtherHero() {
-        scores.event(Event.KILL_OTHER_HERO);
-    }
-
-    public void killEnemyHero() {
-        scores.event(Event.KILL_ENEMY_HERO);
-    }
-
-    @Before
-    public void setup() {
-         settings = new TestGameSettings();
+    @Override
+    protected Class<? extends Enum> eventTypes() {
+        return Event.class;
     }
 
     @Test
     public void shouldCollectScores() {
-        // given
-        givenScores(140);
-
-        // when
-        getGold();
-        getGold();
-        getGold();
-        getGold();
-
-        heroDied();
-
-        winRound();
-        winRound();
-
-        killEnemyHero();
-        killEnemyHero();
-        killEnemyHero();
-
-        killOtherHero();
-        killOtherHero();
-        killOtherHero();
-        killOtherHero();
-        killOtherHero();
-
-        // then
-        assertEquals(140
-                + 4 * settings.integer(GET_GOLD_SCORE)
-                + 1 * settings.integer(HERO_DIED_PENALTY)
-                + 2 * settings.integer(WIN_ROUND_SCORE)
-                + 3 * settings.integer(KILL_ENEMY_HERO_SCORE)
-                + 5 * settings.integer(KILL_OTHER_HERO_SCORE),
-                scores.getScore());
-    }
-
-    private void givenScores(int score) {
-        scores = new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
+        assertEvents("100:\n" +
+                "GET_GOLD > +30 = 130\n" +
+                "GET_GOLD > +30 = 160\n" +
+                "GET_GOLD > +30 = 190\n" +
+                "GET_GOLD > +30 = 220\n" +
+                "HERO_DIED > -10 = 210\n" +
+                "WIN_ROUND > +20 = 230\n" +
+                "WIN_ROUND > +20 = 250\n" +
+                "KILL_ENEMY_HERO > +10 = 260\n" +
+                "KILL_ENEMY_HERO > +10 = 270\n" +
+                "KILL_ENEMY_HERO > +10 = 280\n" +
+                "KILL_OTHER_HERO > +5 = 285\n" +
+                "KILL_OTHER_HERO > +5 = 290\n" +
+                "KILL_OTHER_HERO > +5 = 295\n" +
+                "KILL_OTHER_HERO > +5 = 300\n" +
+                "KILL_OTHER_HERO > +5 = 305");
     }
 
     @Test
     public void shouldNotBeLessThanZero() {
-        // given
-        givenScores(0);
-
-        // when
-        heroDied();
-
-        // then
-        assertEquals(0, scores.getScore());
+        assertEvents("1:\n" +
+                "HERO_DIED > -1 = 0\n" +
+                "HERO_DIED > +0 = 0\n" +
+                "HERO_DIED > +0 = 0");
     }
 
     @Test
     public void shouldCleanScore() {
-        // given
-        givenScores(0);
-        getGold();
-
-        // when
-        scores.clear();
-
-        // then
-        assertEquals(0, scores.getScore());
+        assertEvents("0:\n" +
+                "GET_GOLD > +30 = 30\n" +
+                "(CLEAN) > -30 = 0\n" +
+                "KILL_OTHER_HERO > +5 = 5");
     }
 
     @Test
     public void shouldCollectScores_whenGetGold() {
-        // given
-        givenScores(140);
-
-        // when
-        getGold();
-        getGold();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(GET_GOLD_SCORE),
-                scores.getScore());
+        assertEvents("100:\n" +
+                "GET_GOLD > +30 = 130\n" +
+                "GET_GOLD > +30 = 160");
     }
 
     @Test
     public void shouldCollectScores_whenHeroDied() {
-        // given
-        givenScores(140);
-
-        // when
-        heroDied();
-        heroDied();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(HERO_DIED_PENALTY),
-                scores.getScore());
+        assertEvents("100:\n" +
+                "HERO_DIED > -10 = 90\n" +
+                "HERO_DIED > -10 = 80");
     }
 
     @Test
     public void shouldCollectScores_whenWinRound() {
-        // given
-        givenScores(140);
-
-        // when
-        winRound();
-        winRound();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(WIN_ROUND_SCORE),
-                scores.getScore());
+        assertEvents("100:\n" +
+                "WIN_ROUND > +20 = 120\n" +
+                "WIN_ROUND > +20 = 140");
     }
 
     @Test
     public void shouldCollectScores_whenKillOtherHero() {
-        // given
-        givenScores(140);
-
-        // when
-        killOtherHero();
-        killOtherHero();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(KILL_OTHER_HERO_SCORE),
-                scores.getScore());
+        assertEvents("140:\n" +
+                "KILL_OTHER_HERO > +5 = 145\n" +
+                "KILL_OTHER_HERO > +5 = 150");
     }
 
     @Test
     public void shouldCollectScores_whenKillEnemyHero() {
         // given
-        givenScores(140);
+        settings.integer(KILL_ENEMY_HERO_SCORE, 1);
 
-        // when
-        killEnemyHero();
-        killEnemyHero();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(KILL_ENEMY_HERO_SCORE),
-                scores.getScore());
+        assertEvents("100:\n" +
+                "KILL_ENEMY_HERO > +1 = 101\n" +
+                "KILL_ENEMY_HERO > +1 = 102");
     }
 }
